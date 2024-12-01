@@ -1,3 +1,5 @@
+from collections import Counter
+
 list1, list2 = [], []
 
 with open("./inputs/01.txt") as input:
@@ -6,16 +8,10 @@ with open("./inputs/01.txt") as input:
         list1.append(int(item1))
         list2.append(int(item2))
 
-counts = {}
-for item in list2:
-    if item in counts:
-        counts[item] += 1
-    else:
-         counts[item] = 1
+counts = Counter(list2)
 
 similarity = 0
 for item in list1:
-    if item in counts:
-        similarity += item * counts[item]
+    similarity += item * counts[item]
 
 print(similarity)
