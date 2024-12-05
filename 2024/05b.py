@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 
+after: dict[int, set[int]] = {}
+manuals: list[list[int]] = []
+
 with open("./inputs/05.txt") as input:
     rules = []
     manuals = []
@@ -7,37 +10,34 @@ with open("./inputs/05.txt") as input:
     for line in input:
         line = line.strip()
         if line == "":
+            # Move on to specifying manuals
             break
-        rules.append(line)
+        first, second = line.split("|")
+        first, second = int(first), int(second)
+        if not first in after:
+            after[first] = {second}
+        else:
+            after[first].add(second)
     
     for line in input:
         line = line.strip()
-        manuals.append(line)
-
-following = {}
-for rule in rules:
-    first, second = rule.split("|")
-    first, second = int(first), int(second)
-    if not first in following:
-        following[first] = {second}
-    else:
-        following[first].add(second)
+        manuals.append(map(int, line.split(",")))
 
 @dataclass
 class page():
     pagenum: int
 
     def __lt__(self, other):
-        if not self.pagenum in following:
+        if not self.pagenum in after:
             return True
-        if other.pagenum in following[self.pagenum]: 
+        if other.pagenum in after[self.pagenum]: 
             return True
         return False
 
 sum = 0
 
 for manual in manuals:
-    pages = [page(int(m)) for m in manual.split(",")]
+    pages = [page(p) for p in manual]
     if not all(pages[i] < pages[i+1] for i in range(len(pages)-1)):
         pages = sorted(pages)
         sum += pages[len(pages)//2].pagenum
