@@ -74,7 +74,7 @@ segments = join_empty_segments(segments)
 while True:
     #print(str(segments))
     next_segment_to_move = find_last_unmoved_segment(segments)
-    print(next_segment_to_move)
+    #print(next_segment_to_move)
     if next_segment_to_move == -1:
         break
 
