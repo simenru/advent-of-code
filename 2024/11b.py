@@ -27,3 +27,5 @@ def step(counts):
 
 for i in range(75):
     counts = step(counts)
+
+print(sum(counts.values()))
