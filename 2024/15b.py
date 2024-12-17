@@ -102,9 +102,6 @@ def print_map():
 
 for line in commands:
     for c in line:
-        #if line.startswith("^v<v^<^^>>^v><v<><^<>"):
-        #print_map()
-        #print(c)
         match c:
             case "^":
                 if can_move_ns(px, py, -1):
