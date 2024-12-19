@@ -1,3 +1,5 @@
+from functools import cache
+
 patterns = []
 
 with open("inputs/19.txt") as f:
@@ -11,27 +13,20 @@ with open("inputs/19.txt") as f:
         pattern = pattern.strip()
         patterns.append(pattern)
 
-possible_patterns: dict[str, bool] = {}
-
-for towel in towels:
-    possible_patterns[towel] = True
-
+@cache
 def possible_pattern(pattern: str) -> bool:
-    if pattern in possible_patterns:
-        return possible_patterns[pattern]
+    if pattern == "":
+        return True
 
-    possible = False
     for towel in towels:
         if pattern.startswith(towel):
             if possible_pattern(pattern[len(towel):]):
-                possible = True
-    
-    possible_patterns[pattern] = possible
-    return possible
+                return True
+
+    return False
 
 count = 0
 for pattern in patterns:
-    print(pattern)
     if possible_pattern(pattern):
         count += 1
     
